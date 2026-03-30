@@ -21,7 +21,9 @@ const about = () => {
           <div className = "text-[#5a4a46] text-2xl font-serif space-y-7">
             <p>Hello! My name is Ishanvi Upare. I'm a Computer Science major and Disability Inclusion minor at UIC.</p>
             <p>I love to sing, write, and draw in my spare time.</p>
-            <p>I hope to someday work in UI/UX or Product Design, where I will focus on making products more accessible for a broader user-base. I'd also like to release my own poetry book and continue to study opera on the side.</p>
+            <p>I hope to someday work in UI/UX or Product Design, where I will focus on making products
+               more accessible for a broader user-base. I'd also like to 
+               release my own poetry book and continue to study opera on the side.</p>
           </div>
         
         </div>
