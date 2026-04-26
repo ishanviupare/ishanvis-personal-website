@@ -3,6 +3,10 @@ import { getListOfPosts } from "@/helpers/postHelpers";
 import "../globals.css";
 import Link from "next/link";
 
+export const metadata = {
+  title: "My Projects! 𓍢ִ໋❀",
+}
+
 export default function Home() {
   const posts = getListOfPosts();
   console.log(posts);

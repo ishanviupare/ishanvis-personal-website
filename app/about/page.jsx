@@ -1,5 +1,9 @@
 import React from 'react';
 
+export const metadata = {
+  title: "About Me! 𓍢ִ໋❀",
+}
+
 const about = () => {
   return (
     <>

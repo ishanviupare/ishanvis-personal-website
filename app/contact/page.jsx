@@ -2,6 +2,9 @@ import { getDigestForWellKnownError } from 'next/dist/server/app-render/create-e
 import React from 'react'
 import Link from "next/link";
 
+export const metadata = {
+  title: "Contact Me! 𓍢ִ໋❀",
+}
 
 const contact = () => {
   return (
