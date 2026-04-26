@@ -8,7 +8,31 @@ image: "nav.png"
 
 During my second semester at UIC, I joined the Women in Computer Science Web Development Team. For that semester, the focus was curating our own personal websites. Each weekly meeting would focus on a new concept, and you could choose how to apply it to your own website. As a freshman, this was the perfect introduction to tackling my first personal project.
 
-Throughout this documentation, I may overexplain certain concepts. This is for my own benefit, as nearly everything accomplished for the creation of this website was something new I learned, and explaining it contributes further to my own understanding.
+<div className="bg-[#AD9797] rounded-xl p-6 shadow-lg mb-10 ">
+ 
+ # Table of Contents:
+- [**Design**](#design)
+- [**Setup**](#setup)
+- [**Home Page and Navigation**](#home-page-and-navigation)
+  - [NavBar Component](#navbar-component)
+  - [Conditional Rendering](#conditional-rendering)
+  - [Hover Animations](#hover-animations)
+- [**About Page**](#about-page)
+  - [Responsive Design](#responsive-design)
+  - [Custom Scrollbar](#custom-scrollbar)
+- [**Projects Page**](#projects-page)
+  - [Markdown Files](#markdown-files)
+  - [Dynamic Routing](#dynamic-routing)
+  - [Blog Rendering Components](#blog-rendering-components)
+  - [Formatting Markdown Content](#formatting-markdown-content)
+  - [Reading HTML in Markdown Files](#reading-html-in-markdown-files)
+  - [Time Surpassed Metadata](#time-surpassed-metadata)
+- [**Contact Page**](#contact-page)
+  - [Hyperlinks and Redirection](#hyperlinks-and-redirection)
+- [**Deployment**](#deployment)
+
+</div>
+
 
 # Design
 Before we began programming, we designed our websites using Figma. I wasn't too sure what I would be able to achieve, so I created a simple design:
@@ -20,8 +44,20 @@ I was inspired by this art book in particular:
 I also used my favorite color palette from "Welcome to Bloxburg."
 
 # Setup
-We began with a setup using Next.js and React. We utilized App Routing to 
+We began with a setup using the Next.js framework and React library. We utilized [Next.js's App Router](https://nextjs.org/docs/app) to build our URL structure through files. 
+
+This involves creating an `app` directory, which houses our pages and styles. Within it is `layout.tsx`, which acts as our shared layout across pages. We also have `page.tsx`, which is our root page for the root route (i.e. `website.com/`). 
+
+Additonal routes can be created by adding directories within `app`. Each directory acts as an additional segment of our URL (i.e. `website.com/about`), and turns into a working page when it includes a `page.jsx` (JavaScript) or `page.tsx` (TypeScript) file.
 ![App Routing File Structure](/routing.png)
+
+I also included a custom icon `favicon.ico` in `app`, which appears in the browser tab:
+![Icon](/tab.png)
+
+In addition to `app`, we have a `public` folder in our root to hold media for our website:
+![Folders In Root](/folders.png)
+
+All other files would be added later during development.
 
 # Home Page and Navigation
 When designing the home page, I decided that I wanted it to feel like the cover page of a book.
@@ -163,9 +199,6 @@ To note, `2026-02-05T00:00:00-06:00` is a YAML-formatted date and time represent
 After the frontmatter, the rest of the `.md` file is just the Markdown content, and uses basic Markdown syntax.
 Each `.md` file is used to hold metadata and text that will be rendered as an individual blog page later.
 
-## Blog Components
-
-
 ## Dynamic Routing
 Since the pages are generated from Markdown files rather than explicitly defined routes, we use dynamic routing to catch URL segments as [slugs](https://developer.mozilla.org/en-US/docs/Glossary/Slug).
 
@@ -208,7 +241,7 @@ export const getPostContent = (slug) => {
 
 We can now use our helper functions for `page.js`:
 
-We make sure to import our helper functions, as well as the `BlogPage` component:
+We make sure to import our helper functions, as well as the `BlogPage` component (detailed in the next section):
 ```js
 import { getPostContent, getListOfPosts } from "@/helpers/postHelpers"
 import BlogPage from "@/components/BlogPage"
@@ -234,7 +267,94 @@ async function Post({ params }) {
   )
 }
 ```
-We're done! Now we just need some additional tweaks.
+Now that we can access each post’s data through dynamic routing, we can focus on rendering that data into a blog page.
+
+## Blog Rendering Components
+To render each `.md` file, I created two components:
+
+`BlogIndex`'s purpose is to render a clickable index in our parent route for each blog page.
+```jsx
+function BlogIndex({ posts }) {
+  return ( ... )
+}
+```
+This component returns a responsive grid of clickable cards that resemble pinned Polaroid images:
+
+First, I created a grid that will have as many columns as the available screen space allows:
+```jsx
+<section className="
+  grid gap-12 px-10 w-full
+  grid-cols-1
+  sm:[grid-template-columns:repeat(auto-fit,minmax(250px,250px))]
+  ">
+</section>
+```
+Next, we map over the posts array to access the `slug` property for routing: 
+```jsx
+{
+  posts.map(post => (
+    ...
+  ))
+  }
+```
+We wrap everything in a `<Link>` to allow the whole card to be clickable:
+```jsx
+<Link key={post.slug} href={`blog/${post.slug}`} className=" font-bold text-xl">
+  ...
+</Link>
+```
+Then, I created the card. First, I created the pin overlay, which covers part of the card using `absolute`:
+```jsx
+<img src="/pin.png" className="absolute -top-3 left-1/2 -translate-x-1/2 w-11 h-11 z-20"/>
+```
+Then, I created a cream-colored card to act as the picture frame:
+```jsx
+<div className="bg-[#ddd6cd] pt-5 px-4 pb-10 mx-auto w-full max-w-[320px] shadow-lg">
+```
+Then, we look for our `image` and `title` properties taken from the `.md` file's metadata and place it in our card:
+```jsx
+<article>
+  <img
+    src={post.image}
+    className="w-full aspect-[3/4] object-cover mb-4"
+  />
+  <p className = "">
+    {post.title}
+  </p>
+</article>
+```
+Finally, I realized I wanted it to feel like you were searching through the photos and picking one up. To do this, I used `hover:rotate-3`. However, I also had to add `pointer-events-none` to the pin to ensure it didn't move along with the card.
+
+Next, I created the component `BlogPage`, which renders the metadata and content of each `.md` file as a page:
+```jsx
+import ReactMarkdown from 'react-markdown'
+
+function BlogPage({ content, data }) {
+  return (
+    <>
+      <div className="h-full p-20 bg-[#c6b0ad] font-serif text-[#5a4a46] text-xl">
+        
+        <div className= "mx-auto max-w-4xl p-5 mb-12 bg-[#5a4a46] text-[#c6b0ad] rounded-xl shadow-xl">
+          <h1 className = "text-6xl mb-3">{data.title}</h1>
+          <h2 className = "indent-1 mb-2">{data.subtitle}</h2>
+          <h2 className = "indent-1">{new Date(data.start).toLocaleDateString()}</h2>
+        </div>
+
+        <article>
+          <ReactMarkdown>
+            {content}
+          </ReactMarkdown>
+        </article>
+      </div>
+    </>
+  )
+}
+
+export default BlogPage
+```
+At the top , the properties from the frontmatter of the `.md` file are used to create a header card on the page. Then, the Markdown content is parsed and rendered using `ReactMarkdown`, which allows Markdown content to be rendered as formatted HTML.
+
+Using these, we can easily render a basic blog page. However, we need some additional tweaks for nicer formatting, since `ReactMarkdown` can't accomplish certain things by default.
 
 ## Formatting Markdown Content
 After rendering, I realized I needed to format my Markdown files for my page. To simplify this, I decided to use the **tailwindcss-typography** plugin. I also could've just written my own styles to use in `globals.css`.
@@ -363,3 +483,22 @@ Possible outputs include `"For 4yrs 1mo"`, `"For 1 yr 2mos (ongoing)"`, and `"Fo
 This page acts as a way to access my contact information.
 
 ## Hyperlinks and Redirection
+According to my design, I wanted each icon to act as a hyperlink to my contacts. To do this, I wrapped each image around an anchor tag:
+```js
+<a href = "https://github.com/ishanviupare">
+  <img src = "/Github.png" className = "w-25"/>
+</a>
+```
+This turned each icon into a clickable link.
+By adding blank targets to my links, I made it so new tabs would be opened rather than replacing the current page:
+```js
+<a href = "https://www.linkedin.com/in/ishanviupare/" target = "_blank">
+```
+
+# Deployment
+After development, we deployed our websites using Vercel by connecting our GitHub repositories:
+![Vercel Project Dashboard](/vercel.png)
+
+This handles automatic deployments whenever changes are pushed to the repository, meaning the site is always up-to-date.
+
+This also means we can share a [link](https://ishanvis-personal-website.vercel.app) to our website with others!

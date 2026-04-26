@@ -26,7 +26,8 @@ function BlogPage({ content, data }) {
           prose-strong:text-[#5a4a46] prose-a:text-[#5a4a46]
           prose-code:text-[#4f7507]
           prose-pre:bg-transparent
-          prose-img:max-h-[500] prose-img:mx-auto`}>
+          prose-img:max-h-[500] prose-img:mx-auto
+          prose-ul:list-none`}>
 
           <ReactMarkdown rehypePlugins={[rehypeRaw, rehypeHighlight]}
             components={{
