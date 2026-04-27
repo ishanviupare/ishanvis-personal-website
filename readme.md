@@ -17,8 +17,8 @@ A responsive personal website built with Next.js and React, featuring a Markdown
 
 ## 🎬 Demo
  
-![Demo Video](/demo.mp4)
- 
+[![Watch Demo](https://img.youtube.com/vi/CBbCi2_iYwE/0.jpg)](https://youtu.be/CBbCi2_iYwE)
+
 ---
  
 ## 📋 Table of Contents
