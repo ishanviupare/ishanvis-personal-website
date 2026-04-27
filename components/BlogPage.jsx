@@ -11,7 +11,7 @@ import rehypeSlug from "rehype-slug"
 function BlogPage({ content, data }) {
   return (
     <>
-      <div className="h-full p-20 bg-[#c6b0ad] font-serif text-[#5a4a46] text-xl">
+      <div className="h-full min-h-screen p-20 bg-[#c6b0ad] font-serif text-[#5a4a46] text-xl">
         
         <div className= "mx-auto max-w-4xl p-5 mb-12 bg-[#5a4a46] text-[#c6b0ad] rounded-xl shadow-xl">
           <h1 className = "text-6xl mb-3">{data.title}</h1>
@@ -29,7 +29,8 @@ function BlogPage({ content, data }) {
           prose-code:text-[#4f7507]
           prose-pre:bg-transparent
           prose-img:max-h-[500] prose-img:mx-auto
-          prose-ul:list-none`}>
+          prose-ul:list-none
+          `}>
 
           <ReactMarkdown rehypePlugins={[rehypeRaw, rehypeHighlight, rehypeSlug]}
             components={{
