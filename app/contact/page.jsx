@@ -9,10 +9,10 @@ export const metadata = {
 const contact = () => {
   return (
       <div className = "h-screen bg-[#c6b0ad] p-20">
-        <h1 className = "text-6xl font-serif text-[#5a4a46]"> Contacts... </h1>
+        <h1 className = "text-4xl md:text-6xl font-serif text-[#5a4a46] mb-20"> Contacts... </h1>
 
-        <div className = "flex flex-col items-center gap-12 p-20">
-          <div className = "flex justify-center gap-20">
+      <div className="flex flex-col items-center justify-center text-center gap-12">          
+        <div className = "md:flex justify-center gap-20">
             <a href = "mailto:ishanviupare@gmail.com">
               <img src = "/mail.png" className = "w-25"/>
             </a>
@@ -23,7 +23,7 @@ const contact = () => {
               <img src = "/Github.png" className = "w-25"/>
             </a>
           </div>
-          <img src = "flower.png" className = "w-200 rounded-xl shadow-xl"/>
+          <img src = "flower.png" className = "w-200 rounded-xl shadow-xl opacity-0 md:opacity-100"/>
         </div>
 
       </div>

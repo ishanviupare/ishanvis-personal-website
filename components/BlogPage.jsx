@@ -11,10 +11,10 @@ import rehypeSlug from "rehype-slug"
 function BlogPage({ content, data }) {
   return (
     <>
-      <div className="h-full min-h-screen p-20 bg-[#c6b0ad] font-serif text-[#5a4a46] text-xl">
+      <div className="h-full min-h-screen p-3 lg:p-20 bg-[#c6b0ad] font-serif text-[#5a4a46] text-xl">
         
         <div className= "mx-auto max-w-4xl p-5 mb-12 bg-[#5a4a46] text-[#c6b0ad] rounded-xl shadow-xl">
-          <h1 className = "text-6xl mb-3">{data.title}</h1>
+          <h1 className = "text-3xl lg:text-6xl mb-3">{data.title}</h1>
           <h2 className = "indent-1 mb-2">{data.subtitle}</h2>
           <h2 className = "indent-1">{formatTime({start: data.start, end: data.end})} • {new Date(data.start).toLocaleDateString()}</h2>
         </div>
